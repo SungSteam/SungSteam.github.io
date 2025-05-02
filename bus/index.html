@@ -1,1 +1,278 @@
-test
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巴士图库-SungSteam's blog</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #333;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* 图片容器 */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* 图片网格布局 - 确保自适应 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* 单个图片项 */
+        .image-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-item a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .nav-links a {
+                padding: 0 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .image-item img {
+                height: 180px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="https://sungsteam.github.io/bus/index.html">巴士图库</a></li>
+        </ul>
+    </nav>
+
+    <div class="gallery-container">
+        <div class="image-grid">
+            <!-- 图片项 - 带超链接 -->
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/BJ5120A/index.html">
+                    <img src="https://sungsteam.github.io/bus/BJ5120A/62122@103(2).jpg" alt="BJ5120A">
+                    <div class="image-caption">BJ5120A</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6100LGEV4/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6100LGEV4/42714@-(1).jpg" alt="GZ6100LGEV4">
+                    <div class="image-caption">GZ6100LGEV4</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6100LGEV5/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6100LGEV5/41108@110(1).jpg" alt="GZ6100LGEV5">
+                    <div class="image-caption">GZ6100LGEV5</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6102B2EV/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6102B2EV/6391@31(1).jpg" alt="GZ6102B2EV">
+                    <div class="image-caption">GZ6102B2EV</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6120LGEV4/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6120LGEV4/51091@134(1).jpg" alt="GZ6120LGEV4">
+                    <div class="image-caption">GZ6120LGEV4</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6121LGEV1/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6121LGEV1/54025@广132(1).jpg" alt="GZ6121LGEV1">
+                    <div class="image-caption">GZ6121LGEV1</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6122LGEV/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6122LGEV/51069@112(1).jpg" alt="GZ6122LGEV">
+                    <div class="image-caption">GZ6122LGEV</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6660B3EV/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6660B3EV/01001@-(1).jpg" alt="GZ6660B3EV">
+                    <div class="image-caption">GZ6660B3EV</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6850HZEV/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6850HZEV/5920@413(1).jpg" alt="GZ6850HZEV">
+                    <div class="image-caption">GZ6850HZEV</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/GZ6851B3EV/index.html">
+                    <img src="https://sungsteam.github.io/bus/GZ6851B3EV/6309@-(1).jpg" alt="GZ6851B3EV">
+                    <div class="image-caption">GZ6851B3EV</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/NJL6100EV6/index.html">
+                    <img src="https://sungsteam.github.io/bus/NJL6100EV6/41295@110(1).jpg" alt="NJL6100EV6">
+                    <div class="image-caption">NJL6100EV6</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/NJL6129EV4/index.html">
+                    <img src="https://sungsteam.github.io/bus/NJL6129EV4/52263@107(1).jpg" alt="NJL6129EV4">
+                    <div class="image-caption">NJL6129EV4</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/NJL6600EVD2/index.html">
+                    <img src="https://sungsteam.github.io/bus/NJL6600EVD2/05078@429(1).jpg" alt="NJL6600EVD2">
+                    <div class="image-caption">NJL6600EVD2</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/TEG6105BEV08/index.html">
+                    <img src="https://sungsteam.github.io/bus/TEG6105BEV08/36886@188(1).jpg" alt="TEG6105BEV08">
+                    <div class="image-caption">TEG6105BEV08</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/TEG6106BEV13/index.html">
+                    <img src="https://sungsteam.github.io/bus/TEG6106BEV13/0602@807A(1).jpg" alt="TEG6106BEV13">
+                    <div class="image-caption">TEG6106BEV13</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/ZK5120A1/index.html">
+                    <img src="https://sungsteam.github.io/bus/ZK5120A1/62008@114(1).jpg" alt="ZK5120A1">
+                    <div class="image-caption">ZK5120A1</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/ZK5125D/index.html">
+                    <img src="https://sungsteam.github.io/bus/ZK5125D/62154@104(2).jpg" alt="ZK5125D">
+                    <div class="image-caption">ZK5125D</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/ZK6105BEVG29A/index.html">
+                    <img src="https://sungsteam.github.io/bus/ZK6105BEVG29A/42547@-(1).jpg" alt="ZK6105BEVG29A">
+                    <div class="image-caption">ZK6105BEVG29A</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/ZK6119BEVQY18P/index.html">
+                    <img src="https://sungsteam.github.io/bus/ZK6119BEVQY18P/65821@大学城专线4(1).jpg" alt="ZK6119BEVQY18P">
+                    <div class="image-caption">ZK6119BEVQY18P</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/ZK6126BEVGS3/index.html">
+                    <img src="https://sungsteam.github.io/bus/ZK6126BEVGS3/54013@千年古城线(1).jpg" alt="ZK6126BEVGS3">
+                    <div class="image-caption">ZK6126BEVGS3</div>
+                </a>
+            </div>
+            <div class="image-item">
+                <a href="https://sungsteam.github.io/bus/ZK6650BEVG22/index.html">
+                    <img src="https://sungsteam.github.io/bus/ZK6650BEVG22/05022@925(1).jpg" alt="ZK6650BEVG22">
+                    <div class="image-caption">ZK6650BEVG22</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 SungSteam's blog&He Yurui 版权所有</p>
+    </footer>
+</body>
+</html>
