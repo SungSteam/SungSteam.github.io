@@ -6,273 +6,692 @@
     <title>巴士图库-SungSteam's blog</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            transition: background-color 1s ease;
+            background-color: #f5f5f5;
         }
-
-        /* 导航栏样式 */
-        .navbar {
-            background-color: #333;
-            padding: 1rem;
-            position: fixed;
+        
+        /* 定义几种背景色方案 */
+        body.color-scheme-1 { background-color: #f5f5f5; }
+        body.color-scheme-2 { background-color: #e3f2fd; }
+        body.color-scheme-3 { background-color: #fff8e1; }
+        body.color-scheme-4 { background-color: #f1f8e9; }
+        body.color-scheme-5 { background-color: #ffebee; }
+        body.color-scheme-6 { background-color: #f3e5f5; }
+        
+        .page-container {
             width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 0 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* 图片容器 */
-        .gallery-container {
-            max-width: 1200px;
-            margin: 80px auto 0;
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 20px;
-            flex: 1;
-            width: 100%;
         }
-
-        /* 图片网格布局 - 确保自适应 */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            width: 100%;
+        
+        .gallery-title {
+            text-align: center;
+            margin-bottom: 30px;
+            transition: color 0.5s ease;
+            color: #333;
         }
-
-        /* 单个图片项 */
-        .image-item {
+        
+        /* 根据背景色调整标题颜色 */
+        body.color-scheme-1 .gallery-title { color: #333; }
+        body.color-scheme-2 .gallery-title { color: #0d47a1; }
+        body.color-scheme-3 .gallery-title { color: #e65100; }
+        body.color-scheme-4 .gallery-title { color: #33691e; }
+        body.color-scheme-5 .gallery-title { color: #b71c1c; }
+        body.color-scheme-6 .gallery-title { color: #4a148c; }
+        
+        /* 轮播图样式 */
+        .carousel-container {
+            position: relative;
+            margin-bottom: 30px;
+            overflow: hidden;
+            height: 300px; /* 固定轮播图高度 */
+        }
+        
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+        
+        .carousel-item {
+            flex: 0 0 100%;
+            height: 100%;
+        }
+        
+        .carousel-link {
+            display: block;
+            height: 100%;
+            text-decoration: none;
+        }
+        
+        .carousel-card {
             position: relative;
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            width: 100%;
-        }
-
-        .image-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .image-item a {
-            display: block;
-            text-decoration: none;
-            color: inherit;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
         }
-
-        .image-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
+        
+        .carousel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
-
-        .image-caption {
+        
+        .carousel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 确保图片覆盖整个容器 */
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-card:hover .carousel-img {
+            transform: scale(1.05);
+        }
+        
+        .carousel-info {
             position: absolute;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
             color: white;
-            width: 100%;
-            padding: 10px;
-            text-align: center;
+            padding: 15px;
         }
-
-        /* 页脚样式 */
-        footer {
-            background-color: #333;
+        
+        .carousel-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-info p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.3);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .carousel-dot.active {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
             color: white;
-            text-align: center;
-            padding: 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+        
+        .carousel-control:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .carousel-prev {
+            left: 15px;
+        }
+        
+        .carousel-next {
+            right: 15px;
+        }
+        
+        /* 瀑布流容器 */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-auto-rows: 10px;
+            gap: 15px;
             width: 100%;
         }
-
-        /* 响应式设计 */
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            grid-column: auto;
+            grid-row: auto;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gallery-link {
+            display: block;
+            height: 100%;
+            text-decoration: none;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-info {
+            transform: translateY(0);
+        }
+        
+        .gallery-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .gallery-info p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        /* 版权信息样式 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: all 0.5s ease;
+            margin-top: 20px;
+        }
+        
+        /* 根据背景色调整版权信息样式 */
+        body.color-scheme-1 .footer {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #666;
+        }
+        body.color-scheme-2 .footer {
+            background-color: rgba(227, 242, 253, 0.9);
+            color: #0d47a1;
+        }
+        body.color-scheme-3 .footer {
+            background-color: rgba(255, 248, 225, 0.9);
+            color: #e65100;
+        }
+        body.color-scheme-4 .footer {
+            background-color: rgba(241, 248, 233, 0.9);
+            color: #33691e;
+        }
+        body.color-scheme-5 .footer {
+            background-color: rgba(255, 235, 238, 0.9);
+            color: #b71c1c;
+        }
+        body.color-scheme-6 .footer {
+            background-color: rgba(243, 229, 245, 0.9);
+            color: #4a148c;
+        }
+        
         @media (max-width: 768px) {
-            .image-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 15px;
+            .carousel-container {
+                height: 200px; /* 小屏幕减小轮播图高度 */
             }
             
-            .nav-links a {
-                padding: 0 1rem;
+            .carousel-info {
+                padding: 10px;
+            }
+            
+            .carousel-info h3 {
                 font-size: 1rem;
+                margin-bottom: 5px;
+            }
+            
+            .carousel-info p {
+                font-size: 0.8rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 12px;
             }
         }
-
+        
         @media (max-width: 480px) {
-            .image-grid {
+            .carousel-container {
+                height: 150px; /* 移动端进一步减小轮播图高度 */
+            }
+            
+            .carousel-control {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            .gallery-container {
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
             
-            .image-item img {
-                height: 180px;
+            .footer {
+                font-size: 0.9rem;
+                padding: 15px;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <ul class="nav-links">
-            <li><a href="https://sungsteam.github.io/bus/index.html">巴士图库</a></li>
-        </ul>
-    </nav>
-
-    <div class="gallery-container">
-        <div class="image-grid">
-            <!-- 图片项 - 带超链接 -->
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/BJ5120A/index.html">
-                    <img src="https://sungsteam.github.io/bus/BJ5120A/62122@103(2).jpg" alt="BJ5120A">
-                    <div class="image-caption">BJ5120A</div>
-                </a>
+    <div class="page-container">
+        <h1 class="gallery-title">巴士图库</h1>
+        
+        <!-- 轮播图区域 -->
+        <div class="carousel-container" id="carousel">
+            <div class="carousel-wrapper" id="carouselWrapper">
+                <!-- 轮播图内容将通过JavaScript动态添加 -->
             </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6100LGEV4/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6100LGEV4/42714@-(1).jpg" alt="GZ6100LGEV4">
-                    <div class="image-caption">GZ6100LGEV4</div>
-                </a>
+            
+            <div class="carousel-dots" id="carouselDots"></div>
+            
+            <div class="carousel-control carousel-prev" id="carouselPrev">
+                <i>&lt;</i>
             </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6100LGEV5/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6100LGEV5/41108@110(1).jpg" alt="GZ6100LGEV5">
-                    <div class="image-caption">GZ6100LGEV5</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6102B2EV/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6102B2EV/6391@31(1).jpg" alt="GZ6102B2EV">
-                    <div class="image-caption">GZ6102B2EV</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6120LGEV4/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6120LGEV4/51091@134(1).jpg" alt="GZ6120LGEV4">
-                    <div class="image-caption">GZ6120LGEV4</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6121LGEV1/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6121LGEV1/54025@广132(1).jpg" alt="GZ6121LGEV1">
-                    <div class="image-caption">GZ6121LGEV1</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6122LGEV/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6122LGEV/51069@112(1).jpg" alt="GZ6122LGEV">
-                    <div class="image-caption">GZ6122LGEV</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6660B3EV/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6660B3EV/01001@-(1).jpg" alt="GZ6660B3EV">
-                    <div class="image-caption">GZ6660B3EV</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6850HZEV/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6850HZEV/5920@413(1).jpg" alt="GZ6850HZEV">
-                    <div class="image-caption">GZ6850HZEV</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/GZ6851B3EV/index.html">
-                    <img src="https://sungsteam.github.io/bus/GZ6851B3EV/6309@-(1).jpg" alt="GZ6851B3EV">
-                    <div class="image-caption">GZ6851B3EV</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/NJL6100EV6/index.html">
-                    <img src="https://sungsteam.github.io/bus/NJL6100EV6/41295@110(1).jpg" alt="NJL6100EV6">
-                    <div class="image-caption">NJL6100EV6</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/NJL6129EV4/index.html">
-                    <img src="https://sungsteam.github.io/bus/NJL6129EV4/52263@107(1).jpg" alt="NJL6129EV4">
-                    <div class="image-caption">NJL6129EV4</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/NJL6600EVD2/index.html">
-                    <img src="https://sungsteam.github.io/bus/NJL6600EVD2/05078@429(1).jpg" alt="NJL6600EVD2">
-                    <div class="image-caption">NJL6600EVD2</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/TEG6105BEV08/index.html">
-                    <img src="https://sungsteam.github.io/bus/TEG6105BEV08/36886@188(1).jpg" alt="TEG6105BEV08">
-                    <div class="image-caption">TEG6105BEV08</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/TEG6106BEV13/index.html">
-                    <img src="https://sungsteam.github.io/bus/TEG6106BEV13/0602@807A(1).jpg" alt="TEG6106BEV13">
-                    <div class="image-caption">TEG6106BEV13</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/ZK5120A1/index.html">
-                    <img src="https://sungsteam.github.io/bus/ZK5120A1/62008@114(1).jpg" alt="ZK5120A1">
-                    <div class="image-caption">ZK5120A1</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/ZK5125D/index.html">
-                    <img src="https://sungsteam.github.io/bus/ZK5125D/62154@104(2).jpg" alt="ZK5125D">
-                    <div class="image-caption">ZK5125D</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/ZK6105BEVG29A/index.html">
-                    <img src="https://sungsteam.github.io/bus/ZK6105BEVG29A/42547@-(1).jpg" alt="ZK6105BEVG29A">
-                    <div class="image-caption">ZK6105BEVG29A</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/ZK6119BEVQY18P/index.html">
-                    <img src="https://sungsteam.github.io/bus/ZK6119BEVQY18P/65821@大学城专线4(1).jpg" alt="ZK6119BEVQY18P">
-                    <div class="image-caption">ZK6119BEVQY18P</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/ZK6126BEVGS3/index.html">
-                    <img src="https://sungsteam.github.io/bus/ZK6126BEVGS3/54013@千年古城线(1).jpg" alt="ZK6126BEVGS3">
-                    <div class="image-caption">ZK6126BEVGS3</div>
-                </a>
-            </div>
-            <div class="image-item">
-                <a href="https://sungsteam.github.io/bus/ZK6650BEVG22/index.html">
-                    <img src="https://sungsteam.github.io/bus/ZK6650BEVG22/05022@925(1).jpg" alt="ZK6650BEVG22">
-                    <div class="image-caption">ZK6650BEVG22</div>
-                </a>
+            <div class="carousel-control carousel-next" id="carouselNext">
+                <i>&gt;</i>
             </div>
         </div>
+        
+        <!-- 瀑布流图片区域 -->
+        <div class="gallery-container" id="gallery">
+            <!-- 图片将通过JavaScript动态添加 -->
+        </div>
     </div>
-
-    <footer>
-        <p>&copy; 2025 SungSteam's blog&He Yurui 版权所有</p>
+    
+    <footer class="footer">
+        <p>&copy; 2025 SungSteam's blog & He Yurui 版权所有</p>
     </footer>
+    
+    <script>
+        // 轮播图数据（确保使用宽幅图片）
+        const carouselImages = [
+            { 
+                url: "https://picsum.photos/1600/600?random=10", 
+                title: "轮播图 1",
+                desc: "这是第一张轮播图的描述",
+                link: "https://example.com/category/1"
+            },
+            { 
+                url: "https://picsum.photos/1600/600?random=11", 
+                title: "轮播图 2",
+                desc: "这是第二张轮播图的描述",
+                link: "https://example.com/category/2"
+            },
+            { 
+                url: "https://picsum.photos/1600/600?random=12", 
+                title: "轮播图 3",
+                desc: "这是第三张轮播图的描述",
+                link: "https://example.com/category/3"
+            }
+        ];
+        
+        // 瀑布流图片数据
+        const galleryImages = [
+            { 
+                url: "https://sungsteam.github.io/bus/BJ5120A/62122@103(2).jpg", 
+                width: 3, 
+                height: 1,
+                title: "BJ5120A",
+                desc: "北京福田",
+                link: "https://sungsteam.github.io/bus/BJ5120A/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6100LGEV4/42714@-(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6100LGEV4",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6100LGEV4/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6100LGEV5/41108@110(1).jpg", 
+                width: 600, 
+                height: 200,
+                title: "GZ6100LGEV5",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6100LGEV5/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6102B2EV/6391@31(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6102B2EV",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6102B2EV/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6120LGEV4/51091@134(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6120LGEV4",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6120LGEV4/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6121LGEV1/54025@%E5%B9%BF132(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6121LGEV1",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6121LGEV1/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6122LGEV/51069@112(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6122LGEV",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6122LGEV/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6660B3EV/01001@-(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6660B3EV",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6660B3EV/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6850HZEV/5920@413(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6850HZEV",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6850HZEV/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/GZ6851B3EV/6309@-(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "GZ6851B3EV",
+                desc: "广汽比亚迪",
+                link: "https://sungsteam.github.io/bus/GZ6851B3EV/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/NJL6100EV6/41295@110(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "NJL6100EV6",
+                desc: "南京金龙/开沃",
+                link: "https://sungsteam.github.io/bus/NJL6100EV6/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/NJL6129EV4/52263@107(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "NJL6129EV4",
+                desc: "南京金龙/开沃",
+                link: "https://sungsteam.github.io/bus/NJL6129EV4/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/NJL6600EVD2/05078@429(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "NJL6600EVD2",
+                desc: "南京金龙/创维",
+                link: "https://sungsteam.github.io/bus/NJL6600EVD2/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/TEG6105BEV08/36886@188(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "TEG6105BEV08",
+                desc: "中国中车",
+                link: "https://sungsteam.github.io/bus/TEG6105BEV08/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/TEG6106BEV13/0602@807A(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "TEG6106BEV13",
+                desc: "中国中车",
+                link: "https://sungsteam.github.io/bus/TEG6106BEV13/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/ZK5120A1/62008@114(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "ZK5120A1",
+                desc: "郑州宇通",
+                link: "https://sungsteam.github.io/bus/ZK5120A1/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/ZK5125D/62154@104(2).jpg", 
+                width: 3, 
+                height: 1,
+                title: "ZK5125D",
+                desc: "郑州宇通",
+                link: "https://sungsteam.github.io/bus/ZK5125D/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/ZK6105BEVG29A/42547@-(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "ZK6105BEVG29A",
+                desc: "郑州宇通",
+                link: "https://sungsteam.github.io/bus/ZK6105BEVG29A/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/ZK6119BEVQY18P/65821@%E5%A4%A7%E5%AD%A6%E5%9F%8E%E4%B8%93%E7%BA%BF4(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "ZK6119BEVQY18P",
+                desc: "郑州宇通",
+                link: "https://sungsteam.github.io/bus/ZK6119BEVQY18P/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/ZK6126BEVGS3/54013@%E5%8D%83%E5%B9%B4%E5%8F%A4%E5%9F%8E%E7%BA%BF(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "ZK6126BEVGS3",
+                desc: "郑州宇通",
+                link: "https://sungsteam.github.io/bus/ZK6126BEVGS3/index.html"
+            },
+            { 
+                url: "https://sungsteam.github.io/bus/ZK6650BEVG22/05022@925(1).jpg", 
+                width: 3, 
+                height: 1,
+                title: "ZK6650BEVG22",
+                desc: "郑州宇通",
+                link: "https://sungsteam.github.io/bus/ZK6650BEVG22/index.html"
+            }
+        ];
+        
+        // 背景色变换功能
+        const colorSchemes = [
+            'color-scheme-1',
+            'color-scheme-2',
+            'color-scheme-3',
+            'color-scheme-4',
+            'color-scheme-5',
+            'color-scheme-6'
+        ];
+        
+        let currentScheme = 0;
+        let currentSlide = 0;
+        let carouselInterval;
+        
+        function changeColorScheme() {
+            document.body.classList.remove(colorSchemes[currentScheme]);
+            currentScheme = (currentScheme + 1) % colorSchemes.length;
+            document.body.classList.add(colorSchemes[currentScheme]);
+            setTimeout(changeColorScheme, 10000);
+        }
+        
+        // 计算网格行高
+        function calculateGridRowSpan(imgWidth, imgHeight, gridColWidth) {
+            const aspectRatio = imgHeight / imgWidth;
+            const gridBaseRowHeight = 10;
+            const imgDisplayHeight = gridColWidth * aspectRatio;
+            return Math.ceil(imgDisplayHeight / gridBaseRowHeight);
+        }
+        
+        // 初始化轮播图
+        function initCarousel() {
+            const wrapper = document.getElementById('carouselWrapper');
+            const dots = document.getElementById('carouselDots');
+            
+            wrapper.innerHTML = '';
+            dots.innerHTML = '';
+            
+            // 创建轮播图项目
+            carouselImages.forEach((img, index) => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                item.innerHTML = `
+                    <a href="${img.link}" class="carousel-link" target="_blank">
+                        <div class="carousel-card">
+                            <img src="${img.url}" alt="${img.title}" class="carousel-img">
+                            <div class="carousel-info">
+                                <h3>${img.title}</h3>
+                                <p>${img.desc}</p>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                
+                wrapper.appendChild(item);
+                
+                // 创建指示点
+                const dot = document.createElement('div');
+                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToSlide(index));
+                dots.appendChild(dot);
+            });
+            
+            // 启动自动轮播
+            startCarousel();
+            
+            // 添加控制按钮事件
+            document.getElementById('carouselPrev').addEventListener('click', prevSlide);
+            document.getElementById('carouselNext').addEventListener('click', nextSlide);
+        }
+        
+        // 启动轮播图自动播放
+        function startCarousel() {
+            if (carouselInterval) clearInterval(carouselInterval);
+            carouselInterval = setInterval(nextSlide, 5000);
+        }
+        
+        // 下一张幻灯片
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % carouselImages.length;
+            updateCarousel();
+        }
+        
+        // 上一张幻灯片
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
+            updateCarousel();
+        }
+        
+        // 跳转到指定幻灯片
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+            startCarousel(); // 重置自动播放计时器
+        }
+        
+        // 更新轮播图显示
+        function updateCarousel() {
+            const wrapper = document.getElementById('carouselWrapper');
+            const translateValue = -currentSlide * 100;
+            wrapper.style.transform = `translateX(${translateValue}%)`;
+            
+            // 更新指示点状态
+            document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        // 初始化画廊
+        function initGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            
+            // 获取网格列宽度
+            const gridColWidth = gallery.querySelector('.gallery-item')?.offsetWidth || 280;
+            
+            galleryImages.forEach((img, index) => {
+                const rowSpan = calculateGridRowSpan(img.width, img.height, gridColWidth);
+                
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.style.gridRowEnd = `span ${rowSpan}`;
+                
+                item.innerHTML = `
+                    <a href="${img.link}" class="gallery-link" target="_blank">
+                        <img src="${img.url}" alt="${img.title}" class="gallery-img" loading="lazy">
+                        <div class="gallery-info">
+                            <h3>${img.title}</h3>
+                            <p>${img.desc}</p>
+                        </div>
+                    </a>
+                `;
+                
+                gallery.appendChild(item);
+            });
+        }
+        
+        // 窗口加载和调整大小时重新计算布局
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add(colorSchemes[currentScheme]);
+            setTimeout(changeColorScheme, 10000);
+            
+            initCarousel();
+            initGallery();
+        });
+        
+        window.addEventListener('resize', () => {
+            initGallery();
+        });
+    </script>
 </body>
 </html>
